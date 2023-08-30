@@ -26,12 +26,11 @@ contract PingPong with Deployable {
 
     receive("ping") {
         let ctx: Context = context();
-        let amount: Int = min(ctx.value, myBalance() - ton("0.01"));
-        require(amount > 0, "Insufficient balance");
+        require(ctx.value > 0, "Insufficient balance");
         send(SendParameters{
             to: sender(),
-            value: amount,
-            mode: SendIgnoreErrors,
+            value: 0,
+            mode: SendRemainingValue,
             bounce: true,
             body: "pong".asComment()
         });
